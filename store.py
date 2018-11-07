@@ -21,11 +21,12 @@ def extract_osm_nodes(f_name):
     return nodes
 
 def add_neighbors(nodes):
-    for way in parser.iter_ways:
-         road = way['road']
-         for i in range(len(road) - 1):
-             node1 = road[i]
-             node2 = road[i+1]
-             nodes[node1].neighbors.append(node2)
-             nodes[node2].neighbors.append(node1)
-        return nodes# node1 and node2 forms a bidirectional EDGE
+    for way in parser.iter_ways():
+        road = way['road']
+        for i in range(len(road) - 1):
+            node1 = road[i]
+            node2 = road[i+1]
+            nodes[node1].neighbors.append(node2)
+            nodes[node2].neighbors.append(node1)
+        return nodes
+        # node1 and node2 forms a bidirectional EDGE
