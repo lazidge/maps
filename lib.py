@@ -1,4 +1,4 @@
-import os 
+import os
 import io
 import re
 import sys
@@ -35,20 +35,20 @@ def get_relative_path():
 def read_html(relative_file_path):
     """ Reads the html file on the file location provided
         and injects any external files (marked with {{file_path}} )
-        that may be present. Returns the html content as a string. 
+        that may be present. Returns the html content as a string.
 
         Example:
         >>> html_string = read_html('templates/index.html')
-    """ 
+    """
     dir_path = get_relative_path()
-    file_path = os.path.join(dir_path, relative_file_path)     
+    file_path = os.path.join(dir_path, relative_file_path)
     with open(file_path) as file:
         html_content = file.read()
         html_content = inject_external_files(html_content)
-    return html_content 
+    return html_content
 
 def inject_external_files(html_content):
-    """ [Internal] - Replaces {{ 'file_path' }} with the file content of that file 
+    """ [Internal] - Replaces {{ 'file_path' }} with the file content of that file
         path. Useful for seperation of javascript and css files.
         Uses regex to capture the pattern. Here is a link to see how it
         works: https://regex101.com/r/v917NK/2
@@ -71,17 +71,17 @@ def inject_external_files(html_content):
         to_be_replaced = '{{' + match + '}}'
         new_html_content = new_html_content.replace(to_be_replaced, file_content)
     return new_html_content
-    
+
 
 def post(route = '/'):
     """ A decorator that takes in the route path as argument, and then
-    puts the post handler in the dictionary, with the route as a key. 
-    The handler will receive one `str` argument called 'body', 
+    puts the post handler in the dictionary, with the route as a key.
+    The handler will receive one `str` argument called 'body',
     where the body of the post request will exist. """
 
     def decorator(handler_function):
         posts[route] = handler_function
-        return handler_function 
+        return handler_function
 
     return decorator
 
@@ -92,7 +92,7 @@ def get(route = '/'):
 
     def decorator(handler_function):
         gets[route] = handler_function
-        return handler_function 
+        return handler_function
 
     return decorator
 
@@ -115,7 +115,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """ Tries to find the handler for this GET request. The handler can
-            return either `bytes` or `str`. 
+            return either `bytes` or `str`.
         """
         self._set_headers()
         res = find_get(self.path)
@@ -124,7 +124,7 @@ class Handler(BaseHTTPRequestHandler):
         else:
             self.wfile.write(res)
 
-    
+
     def do_POST(self):
         """ Tries to find the handler for this POST request. The handler
             will get the 'body' of the request as the argument. The body
@@ -143,4 +143,3 @@ def run_server (port = 8314):
     server = HTTPServer(server_adress, Handler)
     print('Starting server on port: {}.'.format(port))
     server.serve_forever()
-    

@@ -3,10 +3,11 @@ from heapq import heappush, heappop
 import math
 
 def dijkstra(adjacency_list, source_id, target_id):
-    """ To be implemented by students (optional exercise). `adjacency_list` is a dictionary with structure: 
+    """ To be implemented by students (optional exercise). `adjacency_list` is a dictionary with structure:
     {node_id: [...(neighbor_id, weight)]}.
     Function should return (distance, path). Path should be a list of the nodes in the shortest path
     **including** the source_id and target_id. If no shortest path is found, it should return (float('inf'), []) """
+
     return float('inf'), []
 
 
@@ -17,7 +18,7 @@ if __name__ == '__main__':
         while True:
             num_nodes = file.readline()
             if num_nodes[0] == '#':
-                continue 
+                continue
             testcase += 1
             num_nodes = int(num_nodes)
             source, target = map(int, file.readline().split())
@@ -46,4 +47,3 @@ if __name__ == '__main__':
         print('Passed all test cases')
     except EOFError:
         print('Passed all test cases')
-    

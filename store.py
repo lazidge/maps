@@ -3,7 +3,11 @@ class Node:
         self.id = id
         self.lat = float(lat)
         self.lng = float(lng)
+        self.distance = float()
         self.neighbors = [] # list of node ids: ['4242', '3141592', '65358979'...]
+
+    def __lt__(self, other_heap_item):
+        return self.distance < other_heap_item.distance # We want to rank by distance
 
 from osm_parser import get_default_parser
 from store import Node
@@ -28,5 +32,5 @@ def add_neighbors(nodes):
             node2 = road[i+1]
             nodes[node1].neighbors.append(node2)
             nodes[node2].neighbors.append(node1)
-        return nodes
+    return nodes
         # node1 and node2 forms a bidirectional EDGE

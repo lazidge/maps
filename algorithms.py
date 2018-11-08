@@ -1,4 +1,5 @@
 import math
+from heapq import heapify, heappop, heappush
 from collections import defaultdict
 from store import Node
 
@@ -28,6 +29,32 @@ def get_closest_node_id(nodes, source_node):
 
 def find_shortest_path(nodes, source_id, target_id):
     """ Return the shortest path using Dijkstra's algortihm. """
-
-    nodes[source_id].neighbors
-    return []
+    shortest_path = []
+    paths = defaultdict(lambda: [])
+    shortest_distance = float('Inf')
+    queue = []
+    heapify(queue)
+    visited = set()
+    shortest_distances = defaultdict(lambda: float('inf'))
+    nodes[source_id].distance = 0
+    heappush(queue, (nodes[source_id]))
+    shortest_distances[nodes[source_id]] = 0
+    while queue:
+        node = heappop(queue)
+        print('wat')
+        if node == nodes[target_id]:
+            shortest_path = paths[node]
+            shortest_distance = shortest_distances[node]
+            break
+        elif not node in visited:
+            visited.add(node)
+            #print(node)
+            for neighbor in node.neighbors:
+                if length_haversine(node, nodes[neighbor]) + shortest_distances[node] < shortest_distances[neighbor]:
+                    shortest_distances[neighbor] = length_haversine(node, nodes[neighbor]) + shortest_distances[node]
+                    #print(shortest_distances[neighbor])
+                    nodes[neighbor].distance = shortest_distances[neighbor]
+                    heappush(queue, (nodes[neighbor]))
+                    paths[neighbor] = paths[node].append(neighbor)
+    print(shortest_path)
+    return shortest_path
