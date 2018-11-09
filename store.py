@@ -27,6 +27,8 @@ def extract_osm_nodes(f_name):
 def add_neighbors(nodes):
     for way in parser.iter_ways():
         road = way['road']
+        tags = way['tags']
+
         for i in range(len(road) - 1):
             node1 = road[i]
             node2 = road[i+1]
