@@ -27,6 +27,14 @@ def get_closest_node_id(nodes, source_node):
             closest_node_id = node
     return closest_node_id
 
+class HeapItem:
+    def __init__(self, node_id, distance, path):
+        self.node_id = node_id
+        self.distance = distance
+        self.path = path
+    def __lt__(self, other_heap_item):
+        self.distance < other_heap_item.distance
+
 def find_shortest_path(nodes, source_id, target_id):
     """ Return the shortest path using Dijkstra's algorithm. """
     shortest_path = []
@@ -37,28 +45,31 @@ def find_shortest_path(nodes, source_id, target_id):
     visited = set()
     shortest_distances = defaultdict(lambda: float('inf'))
     nodes[source_id].distance = 0
-    heappush(queue, (nodes[source_id]))
+    heappush(queue, HeapItem(source_id, 0, []))
     shortest_distances[nodes[source_id]] = 0
     while queue:
         node = heappop(queue)
         #print(nodes[target_id])
-        if node == nodes[target_id]:
-            shortest_path = paths[node]
+        if node.node_id == target_id:
+            shortest_path = node.path
             shortest_distance = shortest_distances[node]
             print("yeet")
             break
-        elif not node in visited:
-            visited.add(node)
+        elif not node.node_id in visited:
+            visited.add(node.node_id)
             #print(visited)
             #print(node)
-            for neighbor in node.neighbors:
-                if (shortest_distances[node.id] + length_haversine(node, nodes[neighbor])) <= shortest_distances[neighbor]:
-                    shortest_distances[neighbor] = shortest_distances[node.id] + length_haversine(node, nodes[neighbor])
+            for neighbor in nodes[node.node_id].neighbors:
+                if (shortest_distances[node.node_id] + length_haversine(nodes[node.node_id], nodes[neighbor])) <= shortest_distances[neighbor]:
+                    shortest_distances[neighbor] = shortest_distances[node.node_id] + length_haversine(nodes[node.node_id], nodes[neighbor])
                     nodes[neighbor].distance = shortest_distances[neighbor]
-                    heappush(queue, nodes[neighbor])
-                    paths[neighbor] = paths[node.id]
-                    paths[neighbor].append(neighbor)
-                    temp = paths[neighbor]
+                    temp = node.path
+                    temp.append(neighbor)
+                    #print(temp)
+                    heappush(queue, HeapItem(neighbor, nodes[neighbor].distance, temp))
+                    #paths[neighbor].append(neighbor)
+                    #if neighbor == target_id:
+                    #print(str(neighbor), ": ", str(paths[neighbor]))
                     #print(paths[neighbor])
-    
+    #print(shortest_path)
     return shortest_path

@@ -8,6 +8,14 @@ import json
 nodes = extract_osm_nodes('linkoping.osm')
 nodes = add_neighbors(nodes)
 
+lonely= []
+
+for node in nodes:
+    if not nodes[node].neighbors:
+        lonely.append(node)
+
+for node in lonely:
+    nodes.pop(node)
 
 @get('/')
 def index():
@@ -24,7 +32,7 @@ def shortest_path(body):
     for i in range(len(path)):
         node_id = path[i]
         path[i] = (nodes[node_id].lat, nodes[node_id].lng)
-    print(path)
+    #print(path)
     response = {'path': path} # The front-end expects the response to have a 'path' key
     return json.dumps(response)
 

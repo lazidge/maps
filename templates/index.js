@@ -18,7 +18,7 @@ async function postShortestPath(event){
     // Check that they're not Nan (stops function if one is Nan)
     if(!lat1 || !lng1  || !lat2 || !lng2)
         return alert('Formatting Error: Coordinates are not float values.')
-    
+
     req = {lat1, lng1, lat2, lng2} // Dictionary auto-keys
 
     res = await fetch('/shortest-path', {
@@ -27,20 +27,20 @@ async function postShortestPath(event){
         body: JSON.stringify(req)
     })
 
-    res = await res.json() 
+    res = await res.json()
     console.log(res.path)
     var poly = L.polyline(res.path).addTo(map)
 
 }
 
 function handleMapClick ({latlng}){
-    var {lat, lng} = latlng 
+    var {lat, lng} = latlng
     var marker = L.marker([lat, lng]).addTo(map)
     var posNumber = markerIsStart.checked ? '1' : '2'
     document.querySelector('#lat' + posNumber).value = lat
     document.querySelector('#lng' + posNumber).value = lng
     if(markerIsStart.checked)
-        markerIsEnd.checked = true 
+        markerIsEnd.checked = true
 }
 
 map.on('click', handleMapClick)
