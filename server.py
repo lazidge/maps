@@ -15,7 +15,7 @@ for node in nodes:
         lonely.append(node)
 
 for node in lonely:
-    nodes.pop(node)
+    del nodes[node]
 
 @get('/')
 def index():
@@ -36,4 +36,4 @@ def shortest_path(body):
     response = {'path': path} # The front-end expects the response to have a 'path' key
     return json.dumps(response)
 
-run_server(1338)
+run_server(1339)

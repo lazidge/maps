@@ -30,7 +30,6 @@ async function postShortestPath(event){
     res = await res.json()
     console.log(res.path)
     var poly = L.polyline(res.path).addTo(map)
-
 }
 
 function handleMapClick ({latlng}){

@@ -45,17 +45,20 @@ def find_shortest_path(nodes, source_id, target_id):
     visited = set()
     shortest_distances = defaultdict(lambda: float('inf'))
     shortest_distances[source_id] = 0
-    heappush(queue, HeapItem(source_id, 0, []))
-    shortest_distances[nodes[source_id]] = 0
+    heappush(queue, HeapItem(source_id, 0, [source_id]))
+    shortest_distances[source_id] = 0
     while queue:
         node = heappop(queue)
+        print(node.distance)
         if node.node_id == target_id:
+            node.path.append(node.node_id)
             shortest_path = node.path
             last = float('Inf')
             """for i in node:
                 if i.distance < last:
                     last = i"""
-            shortest_distance = nodes[node.node_id].distance
+            shortest_distance = shortest_distances[node.node_id]
+            print(node.distance)
             print("yeet")
             break
         elif not node.node_id in visited:
@@ -63,10 +66,14 @@ def find_shortest_path(nodes, source_id, target_id):
             #print(visited)
             #print(node)
             for neighbor in nodes[node.node_id].neighbors:
-                if (shortest_distances[node.node_id] + length_haversine(nodes[node.node_id], nodes[neighbor])) <= shortest_distances[neighbor]:
-                    shortest_distances[neighbor] = shortest_distances[node.node_id] + length_haversine(nodes[node.node_id], nodes[neighbor])
+                total_distance = shortest_distances[node.node_id] + abs(length_haversine(nodes[node.node_id], nodes[neighbor]))
+                #print(total_distance)
+                if total_distance < shortest_distances[neighbor]:
+                    shortest_distances[neighbor] = total_distance
                     neighbor_path = node.path.copy()
                     neighbor_path.append(neighbor)
                     heappush(queue, HeapItem(neighbor, shortest_distances[neighbor], neighbor_path))
-    #print(shortest_path)
+
+            #print(shortest_distances[node.node_id])
+    #print(shortest_distance)
     return shortest_path

@@ -28,11 +28,11 @@ def add_neighbors(nodes):
     for way in parser.iter_ways():
         road = way['road']
         tags = way['tags']
-        #if 'highway' in tags and not 'pedestrian' in tags and not 'footway' in tags and not 'cycleway' in tags and not 'path' in tags and not 'steps' in tags and not 'track' in tags and not 'sidewalk' in tags:
-        for i in range(len(road) - 1):
-            node1 = road[i]
-            node2 = road[i+1]
-            nodes[node1].neighbors.append(node2)
-            nodes[node2].neighbors.append(node1)
+        if 'highway' in tags: #and not 'pedestrian' in tags and not 'cycleway' in tags and not 'path' in tags: and not 'footway' in tags and not 'cycleway' in tags and not 'path' in tags and not 'steps' in tags and not 'track' in tags and not 'sidewalk' in tags:
+            for i in range(len(road) - 1):
+                node1 = road[i]
+                node2 = road[i+1]
+                nodes[node1].neighbors.append(node2)
+                nodes[node2].neighbors.append(node1)
     return nodes
         # node1 and node2 forms a bidirectional EDGE

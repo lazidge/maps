@@ -1,8 +1,43 @@
 from collections import defaultdict
-from heapq import heappush, heappop
+from heapq import heappush, heappop, heapify
 import math
+from algorithms import HeapItem
 
 def dijkstra(adjacency_list, source_id, target_id):
+    shortest_path = []
+    #paths = defaultdict(lambda: [])
+    shortest_distance = float('Inf')
+    queue = []
+    heapify(queue)
+    visited = set()
+    shortest_distances = defaultdict(lambda: float('inf'))
+    shortest_distances[source_id] = 0
+    heappush(queue, (0, source_id, [source_id])) # (distance, node_id, path)
+    shortest_distances[source_id] = 0
+    while queue:
+        dist1, node1, path1 = heappop(queue)
+        if node1 == target_id:
+            shortest_path = path1
+            last = float('Inf')
+            """for i in node:
+                if i.distance < last:
+                    last = i"""
+            shortest_distance = dist1
+            print("yeet")
+            break
+        elif not node1 in visited:
+            visited.add(node1)
+            #print(visited)
+            #print(node)
+            for neighbor, weight in adjacency_list[node1]:
+                dist2 = dist1 + weight
+                if dist2 < shortest_distances[neighbor]:
+                    shortest_distances[neighbor] = dist2
+                    heappush(queue, (dist2, neighbor, path1 + [neighbor]))
+                #print(shortest_distances[node.node_id])
+    #print(shortest_distance)
+    return shortest_distance, shortest_path
+
     """ To be implemented by students (optional exercise). `adjacency_list` is a dictionary with structure:
     {node_id: [...(neighbor_id, weight)]}.
     Function should return (distance, path). Path should be a list of the nodes in the shortest path
