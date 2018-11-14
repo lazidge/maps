@@ -33,7 +33,7 @@ class HeapItem:
         self.distance = distance
         self.path = path
     def __lt__(self, other_heap_item):
-        self.distance < other_heap_item.distance
+       return self.distance < other_heap_item.distance
 
 def find_shortest_path(nodes, source_id, target_id):
     """ Return the shortest path using Dijkstra's algorithm. """
