@@ -4,8 +4,10 @@ from lib import post
 from store import Node, extract_osm_nodes, add_neighbors
 from algorithms import get_closest_node_id, find_shortest_path
 import json
+from db import *
 
 nodes = extract_osm_nodes('linkoping.osm')
+
 nodes = add_neighbors(nodes)
 
 lonely= []
@@ -16,6 +18,10 @@ for node in nodes:
 
 for node in lonely:
     del nodes[node]
+
+create_db(nodes, "dunderhonung")
+
+new_nodes = get_data("dunderhonung")
 
 @get('/')
 def index():
