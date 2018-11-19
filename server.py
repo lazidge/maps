@@ -6,9 +6,14 @@ from algorithms import get_closest_node_id, find_shortest_path
 import json
 from db import *
 
-nodes = extract_osm_nodes('linkoping.osm')
+#nodes = extract_osm_nodes('linkoping.osm')
 
-nodes = add_neighbors(nodes)
+if create_db("dunderhonung"):
+    nodes = extract_osm_nodes('linkoping.osm')
+    nodes = add_neighbors(nodes)
+    update_db(nodes, "dunderhonung")
+
+nodes = get_data("dunderhonung")
 
 lonely= []
 
@@ -18,10 +23,9 @@ for node in nodes:
 
 for node in lonely:
     del nodes[node]
+#for i in nodes:
+    #print(nodes[i].neighbors)
 
-create_db(nodes, "dunderhonung")
-
-new_nodes = get_data("dunderhonung")
 
 @get('/')
 def index():
