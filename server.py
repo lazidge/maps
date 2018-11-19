@@ -11,18 +11,19 @@ from db import *
 if create_db("dunderhonung"):
     nodes = extract_osm_nodes('linkoping.osm')
     nodes = add_neighbors(nodes)
+    lonely= []
+
+    for node in nodes:
+        if not nodes[node].neighbors:
+            lonely.append(node)
+
+    for node in lonely:
+        del nodes[node]
     update_db(nodes, "dunderhonung")
 
 nodes = get_data("dunderhonung")
 
-lonely= []
 
-for node in nodes:
-    if not nodes[node].neighbors:
-        lonely.append(node)
-
-for node in lonely:
-    del nodes[node]
 #for i in nodes:
     #print(nodes[i].neighbors)
 
