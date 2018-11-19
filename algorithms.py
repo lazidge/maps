@@ -73,7 +73,7 @@ def find_shortest_path(nodes, source_id, target_id):
 
             #print(shortest_distances[node.node_id])
     #print(shortest_distance)
-    return shortest_path """ 
+    return shortest_path """
 
 
 
@@ -134,14 +134,10 @@ def find_shortest_path(nodes, source_id, target_id):
     shortest_distances[source_id] = 0
     while queue:
         node = heappop(queue)
-        print(node.distance)
+        #print(node.distance)
         if node.node_id == target_id:
             node.path.append(node.node_id)
             shortest_path = node.path
-            last = float('Inf')
-            """for i in node:
-               if i.distance < last:
-                   last = i"""
             shortest_distance = shortest_distances[node.node_id]
             print(node.distance)
             print("yeet")
@@ -151,13 +147,16 @@ def find_shortest_path(nodes, source_id, target_id):
             #print(visited)
             #print(node)
             for neighbor in nodes[node.node_id].neighbors:
+                #print('287188591')
+                #print("short_dist: " + abs(length_haversine(nodes[node.node_id], nodes[neighbor])))
+                #print(node.node_id in )
                 total_distance = shortest_distances[node.node_id] + abs(length_haversine(nodes[node.node_id], nodes[neighbor]))
-                #print(total_distance)
                 if total_distance < shortest_distances[neighbor]:
                     shortest_distances[neighbor] = total_distance
                     neighbor_path = node.path.copy()
                     neighbor_path.append(neighbor)
                     heappush(queue, HeapItem(neighbor, shortest_distances[neighbor], neighbor_path, nodes[neighbor].lat, nodes[neighbor].lng, nodes, source_id))
+                    print(total_distance)
 
             #print(shortest_distances[node.node_id])
     #print(shortest_distance)
